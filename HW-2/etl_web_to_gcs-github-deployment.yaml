@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'etl-web-to-gcs'
 ###
-name: github-deployment-test
+name: github-deployment-new
 description: The main ETL function
 version: 31fc00b2840897018d440794d6052d1f
 # The work queue that will handle this deployment's runs
@@ -27,16 +27,16 @@ infrastructure:
 flow_name: etl-web-to-gcs
 manifest_path: null
 storage:
-  repository: https://github.com/Manojkl/data-engineering-manojkl
+  repository: https://github.com/Manojkl/data-engineering-manojkl/
   reference: null
   access_token: null
-  _block_document_id: 487200a9-f6aa-4c15-9644-124738328e01
-  _block_document_name: github-zoomcamp-test
+  _block_document_id: 5068fa93-e440-45b1-8a28-55805e7a26cc
+  _block_document_name: github-zoomcamp-new
   _is_anonymous: false
   block_type_slug: github
   _block_type_slug: github
 path: ''
-entrypoint: etl_web_to_gcs.py:etl_web_to_gcs
+entrypoint: HW-2/etl_web_to_gcs.py:etl_web_to_gcs
 parameter_openapi_schema:
   title: Parameters
   type: object

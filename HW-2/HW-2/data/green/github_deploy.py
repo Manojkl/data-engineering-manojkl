@@ -1,11 +1,11 @@
 from prefect.filesystems import GitHub
 
 block = GitHub(
-    repository="https://github.com/Manojkl/data-engineering-manojkl/",
+    repository="https://github.com/Manojkl/data-engineering-manojkl",
 
 )
 block.get_directory("HW-2") # specify a subfolder of repo
-block.save("github-zoomcamp-new")
+block.save("github-zoomcamp-test")
 
 # from prefect.deployments import Deployment
 # from etl_web_to_gcs import etl_web_to_gcs
