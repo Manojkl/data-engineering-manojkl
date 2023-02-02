@@ -4,9 +4,13 @@ from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
 from random import randint
 from prefect.blocks.notifications import SlackWebhook
+from prefect.utilities.notifications import slack_notifier
+
+# handler = slack_notifier(only_states=[Completed]) # we can call it early
+
 slack_webhook_block = SlackWebhook.load("slack")
 
-@task(retries=3)
+@task(retries=3, state_handlers=[slack_notifier])
 def fetch(dataset_url: str) -> pd.DataFrame:
     """Read taxi data from web into pandas DataFrame"""
     # if randint(0, 1) > 0:
@@ -17,7 +21,7 @@ def fetch(dataset_url: str) -> pd.DataFrame:
     return df
 
 
-@task(log_prints=True)
+@task(log_prints=True, state_handlers=[slack_notifier])
 def clean(df: pd.DataFrame) -> pd.DataFrame:
     """Fix dtype issues"""
     df["lpep_pickup_datetime"] = pd.to_datetime(df["lpep_pickup_datetime"])
@@ -29,7 +33,7 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-@task()
+@task(state_handlers=[slack_notifier])
 def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     """Write DataFrame out locally as parquet file"""
     path = Path(f"/Users/manojkl/Documents/data-engineering-manojkl/HW-2/data/{color}/{dataset_file}.parquet")
@@ -38,7 +42,7 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
     return path
 
 
-@task()
+@task(state_handlers=[slack_notifier])
 def write_gcs(path: Path) -> None:
     """Upload local parquet file to GCS"""
     gcs_block = GcsBucket.load("zoom-gcs")
