@@ -12,6 +12,7 @@ from prefect_gcp import GcpCredentials
 def extract_from_gcs(color: str, year: int, month: int) -> Path:
     """Download trip data from GCS"""
     gcs_path = f"data/{color}/{color}_tripdata_{year}-{month:02}.parquet"
+    print(gcs_path)
     gcs_block = GcsBucket.load("zoom-gcs")
     gcs_block.get_directory(from_path=gcs_path, local_path=f"data_new/")
     return Path(gcs_path)
